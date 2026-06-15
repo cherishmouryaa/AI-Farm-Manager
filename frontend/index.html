@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Farm Manager - AP Agriculture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="logo-area">
+                <span class="logo-emoji">🌾</span>
+                <div class="logo-text">
+                    <h1>AI Farm Manager</h1>
+                    <p>ఆంధ్రప్రదేశ్ వ్యవసాయ డిజిటల్ ప్లానర్</p>
+                </div>
+            </div>
+            <div class="header-badge">
+                <span class="badge-dot"></span>
+                <span>Naidupeta Hub Active</span>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- Left Side: Input Form Column -->
+            <section class="control-panel">
+                <div class="card form-card">
+                    <h2><span class="card-icon">🚜</span> Farm Configuration</h2>
+                    <p class="form-subtitle">Enter your farm details to generate your customized agricultural strategy.</p>
+                    
+                    <form id="farmForm">
+                        <div class="form-group">
+                            <label for="location">Location (ప్రాంతం)</label>
+                            <select id="location" required>
+                                <option value="Naidupeta">Naidupeta</option>
+                                <option value="Nellore">Nellore</option>
+                                <option value="Tirupati">Tirupati</option>
+                                <option value="Gudur">Gudur</option>
+                                <option value="Sullurpeta">Sullurpeta</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="crop">Crop (పంట రకం)</label>
+                            <select id="crop" required>
+                                <option value="Groundnut">Groundnut (Verusanaga)</option>
+                                <option value="Paddy">Paddy (Vari)</option>
+                                <option value="Sugarcane">Sugarcane (Cheruku)</option>
+                                <option value="Mango">Mango (Mamidi)</option>
+                                <option value="Lemon">Lemon (Nimmakaaya)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="farmSize">Farm Size (Sinnu / Acres)</label>
+                            <input type="number" id="farmSize" min="0.5" max="100" step="0.5" value="5" required>
+                            <span class="input-unit">Acres</span>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="soilType">Soil Type (నేల రకం)</label>
+                                <select id="soilType" required>
+                                    <option value="Red Sandy Loam">Red Sandy Loam</option>
+                                    <option value="Black Clayey">Black Clayey</option>
+                                    <option value="Sandy Soil">Sandy Soil</option>
+                                    <option value="Alluvial Soil">Alluvial Soil</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="waterSource">Water Source (నీటి వనరు)</label>
+                                <select id="waterSource" required>
+                                    <option value="Borewell">Borewell</option>
+                                    <option value="Canal">Canal</option>
+                                    <option value="Rainfed">Rainfed</option>
+                                    <option value="Open Well">Open Well</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="btn btn-primary">
+                            <span class="btn-text">Generate Farm Plan</span>
+                            <span class="btn-spinner hidden"></span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Right Column: Planner output results -->
+            <section class="results-panel">
+                <!-- Initial Empty / Welcome view state -->
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-icon">🌾</div>
+                    <h3>Start Your AP Agri Planner</h3>
+                    <p>Adjust the farm inputs on the left side and click "Generate Farm Plan" to retrieve deep-learning weather outlooks, pest alerts, crop recommendation rules, and professional financial sheets for your land.</p>
+                </div>
+
+                <!-- Active Plan Content, hidden initially -->
+                <div id="planOutput" class="plan-output hidden">
+                    
+                    <!-- Weather Card & Recommendation Card Row -->
+                    <div class="results-grid">
+                        
+                        <!-- Weather Card -->
+                        <div class="card weather-card">
+                            <div class="card-header">
+                                <h3><span class="card-icon">☀️</span> Current Weather & Outlook</h3>
+                                <span class="badge weather-badge">Live Sync</span>
+                            </div>
+                            <div class="weather-brief">
+                                <div class="temp-val" id="weatherTemp">34°C</div>
+                                <div class="weather-meta">
+                                    <div class="meta-item">
+                                        <span class="label">Humidity:</span>
+                                        <strong id="weatherHumidity">62%</strong>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="label">Rain Forecast:</span>
+                                        <strong id="weatherRainStatus">Moderate chance of rain</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="weather-footer">
+                                <p id="weatherOutlook">Typical Tirupati district seasonal micro-climate. Keep proper hydration cycles in the evening.</p>
+                            </div>
+                        </div>
+
+                        <!-- Crop Recommendation Card -->
+                        <div class="card recommendation-card">
+                            <div class="card-header">
+                                <h3><span class="card-icon">🌱</span> Crop Recommendation</h3>
+                                <span class="badge crop-badge" id="cropTitle">Groundnut</span>
+                            </div>
+                            <ul class="rec-list" id="recList">
+                                <li>Apply gypsum during pegging stage.</li>
+                                <li>Monitor for leaf miner and red hairy caterpillar.</li>
+                                <li>Maintain proper irrigation schedule.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Profit Forecast Card -->
+                    <div class="card budget-card">
+                        <div class="card-header">
+                            <h3><span class="card-icon">💰</span> Profit & Investment Forecast</h3>
+                            <span class="badge currency-badge" id="cardAcreage">5 Acres</span>
+                        </div>
+                        <div class="budget-grid">
+                            <div class="budget-box cost">
+                                <span class="lbl">Estimated Cost</span>
+                                <div class="amt" id="finCost">₹45,000</div>
+                            </div>
+                            <div class="budget-box revenue">
+                                <span class="lbl">Expected Revenue</span>
+                                <div class="amt" id="finRevenue">₹75,000</div>
+                            </div>
+                            <div class="budget-box profit highlight">
+                                <span class="lbl">Expected Profit</span>
+                                <div class="amt" id="finProfit">₹30,000</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7-Day Planner Card -->
+                    <div class="card planner-card">
+                        <div class="card-header">
+                            <h3><span class="card-icon">📅</span> 7-Day Action Plan</h3>
+                            <span class="badge weekly-badge">Weekly Cycle</span>
+                        </div>
+                        <div class="planner-days">
+                            <div class="planner-day">
+                                <div class="day-label">Monday</div>
+                                <div class="day-task" id="taskDay1">Soil moisture check and irrigation inspection</div>
+                            </div>
+
+                            <div class="planner-day">
+                                <div class="day-label">Tuesday</div>
+                                <div class="day-task" id="taskDay2">Apply gypsum and micronutrients</div>
+                            </div>
+
+                            <div class="planner-day">
+                                <div class="day-label">Wednesday</div>
+                                <div class="day-task" id="taskDay3">Weed removal and field monitoring</div>
+                            </div>
+
+                            <div class="planner-day">
+                                <div class="day-label">Thursday</div>
+                                <div class="day-task" id="taskDay4">Pest inspection and preventive spray</div>
+                            </div>
+
+                            <div class="planner-day">
+                                <div class="day-label">Friday</div>
+                                <div class="day-task" id="taskDay5">Irrigation management</div>
+                            </div>
+
+                            <div class="planner-day">
+                                <div class="day-label">Saturday</div>
+                                <div class="day-task" id="taskDay6">Review crop growth and nutrient status</div>
+                            </div>
+
+                            <div class="planner-day">
+                                <div class="day-label">Sunday</div>
+                                <div class="day-task" id="taskDay7">Prepare next week's farm activities</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </main>
+    </div>
+</body>
+</html>

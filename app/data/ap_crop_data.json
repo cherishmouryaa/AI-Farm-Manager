@@ -1,0 +1,37 @@
+{
+  "groundnut": {
+    "soil": "Red Sandy Loam",
+    "season": "Kharif",
+    "water_requirement": "Medium",
+    "profitability": "High",
+    "suitability": 92
+  },
+  "paddy": {
+    "soil": "Clay Loam",
+    "season": "Kharif",
+    "water_requirement": "High",
+    "profitability": "Medium",
+    "suitability": 88
+  },
+  "sugarcane": {
+    "soil": "Black Soil",
+    "season": "Year Round",
+    "water_requirement": "Very High",
+    "profitability": "Medium",
+    "suitability": 70
+  },
+  "mango": {
+    "soil": "Red Sandy Loam",
+    "season": "Orchard",
+    "water_requirement": "Medium",
+    "profitability": "High",
+    "suitability": 80
+  },
+  "lemon": {
+    "soil": "Red Sandy Loam",
+    "season": "Year Round",
+    "water_requirement": "Medium",
+    "profitability": "High",
+    "suitability": 84
+  }
+}
